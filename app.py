@@ -59,14 +59,18 @@ st.write("Sabremos si estás con Isa o no", platform.python_version())
 model = load_model('keras_model.h5')
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
-image = Image.open('isa.png')
-st.image(image, width=350)
+col1, col2 = st.columns(2)
+
+with col1:
+    image = Image.open('isa.png')
+    st.image(image, width=350, caption="✨ Imagen de Isa ✨")
+
+with col2:
+    img_file_buffer = st.camera_input("📷 ¡Sonríe y toma una foto!")
 
 with st.sidebar:
     st.subheader("🌈 Usa tu modelo de Teachable Machine y mira si estás con Isa")
     st.write("Carga o toma una imagen y veremos si en tu imagen estás con Isa o no💫")
-
-img_file_buffer = st.camera_input("📷 ¡Sonríe y toma una foto!")
 
 if img_file_buffer is not None:
     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
@@ -78,9 +82,7 @@ if img_file_buffer is not None:
     data[0] = normalized_image_array
     prediction = model.predict(data)
 
-    if prediction[0][0]>0.5:
+    if prediction[0][0] > 0.5:
         st.header('🎉 ¡Con Isa detectada! Probabilidad: ' + str(prediction[0][0]))
-    if prediction[0][1]>0.5:
+    if prediction[0][1] > 0.5:
         st.header('🤖 ¡Sin Isa detectada! Probabilidad: ' + str(prediction[0][1]))
-
-
