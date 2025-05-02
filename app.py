@@ -6,7 +6,7 @@ from keras.models import load_model
 import platform
 
 st.set_page_config(
-    page_title="Reconocimiento de Imágenes con Cariño",
+    page_title="Reconocimiento de Imagen con Isa",
     page_icon="📸",
     layout="centered"
 )
@@ -53,18 +53,18 @@ h1, h2, h3, h4, h5, h6, .stTitle, .stHeader {
 </style>
 """, unsafe_allow_html=True)
 
-st.title("✨ ¡Descubre lo que hay en tu imagen! ✨")
-st.write("Versión de Python en uso:", platform.python_version())
+st.title("✨ ¿Estás con Isa? ✨")
+st.write("Sabremos si estás con Isa o no", platform.python_version())
 
 model = load_model('keras_model.h5')
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
-image = Image.open('OIG5.jpg')
+image = Image.open('Isa.png')
 st.image(image, width=350)
 
 with st.sidebar:
-    st.subheader("🌈 Usa tu modelo de Teachable Machine")
-    st.write("Carga o toma una imagen y deja que la magia suceda 💫")
+    st.subheader("🌈 Usa tu modelo de Teachable Machine y mira si estás con Isa")
+    st.write("Carga o toma una imagen y veremos si en tu imagen estás con Isa o no💫")
 
 img_file_buffer = st.camera_input("📷 ¡Sonríe y toma una foto!")
 
