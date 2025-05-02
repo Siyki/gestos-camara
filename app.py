@@ -1,50 +1,86 @@
 import streamlit as st
 import cv2
 import numpy as np
-#from PIL import Image
 from PIL import Image as Image, ImageOps as ImagOps
 from keras.models import load_model
-
 import platform
 
-# Muestra la versión de Python junto con detalles adicionales
-st.write("Versión de Python:", platform.python_version())
+st.set_page_config(
+    page_title="Reconocimiento de Imágenes con Cariño",
+    page_icon="📸",
+    layout="centered"
+)
+
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+html, body, .stApp {
+    background: linear-gradient(to bottom right, #a18cd1, #fbc2eb);
+    color: #2d2d2d;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6, .stTitle, .stHeader {
+    color: #ff5e7e;
+    text-align: center;
+}
+
+.stImage > img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stButton>button {
+    background-color: #ff5e7e;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.block-container {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.stSidebar > div:first-child {
+    background-color: #fff3f8;
+    color: #2d2d2d;
+    font-family: 'Poppins', sans-serif;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.title("✨ ¡Descubre lo que hay en tu imagen! ✨")
+st.write("Versión de Python en uso:", platform.python_version())
 
 model = load_model('keras_model.h5')
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
-st.title("Reconocimiento de Imágenes")
-#st.write("Versión de Python:", platform.python_version())
 image = Image.open('OIG5.jpg')
 st.image(image, width=350)
+
 with st.sidebar:
-    st.subheader("Usando un modelo entrenado en teachable Machine puedes Usarlo en esta app para identificar")
-img_file_buffer = st.camera_input("Toma una Foto")
+    st.subheader("🌈 Usa tu modelo de Teachable Machine")
+    st.write("Carga o toma una imagen y deja que la magia suceda 💫")
+
+img_file_buffer = st.camera_input("📷 ¡Sonríe y toma una foto!")
 
 if img_file_buffer is not None:
-    # To read image file buffer with OpenCV:
     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-   #To read image file buffer as a PIL Image:
     img = Image.open(img_file_buffer)
-
     newsize = (224, 224)
     img = img.resize(newsize)
-    # To convert PIL Image to numpy array:
     img_array = np.array(img)
-
-    # Normalize the image
     normalized_image_array = (img_array.astype(np.float32) / 127.0) - 1
-    # Load the image into the array
     data[0] = normalized_image_array
-
-    # run the inference
     prediction = model.predict(data)
-    print(prediction)
+
     if prediction[0][0]>0.5:
-      st.header('Con Isa, con Probabilidad: '+str( prediction[0][0]) )
+        st.header('🎉 ¡Con Isa detectada! Probabilidad: ' + str(prediction[0][0]))
     if prediction[0][1]>0.5:
-      st.header('Sin Isa, con Probabilidad: '+str( prediction[0][1]))
-    #if prediction[0][2]>0.5:
-    # st.header('Derecha, con Probabilidad: '+str( prediction[0][2]))
+        st.header('🤖 ¡Sin Isa detectada! Probabilidad: ' + str(prediction[0][1]))
 
 
