@@ -63,7 +63,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     image = Image.open('isa.png')
-    st.image(image, width=350, caption="✨ Imagen de Isa ✨")
+    st.image(image, width=200, caption="✨ Imagen de Isa ✨")
 
 with col2:
     img_file_buffer = st.camera_input("📷 ¡Sonríe y toma una foto!")
@@ -75,7 +75,7 @@ with st.sidebar:
 if img_file_buffer is not None:
     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
     img = Image.open(img_file_buffer)
-    newsize = (224, 224)
+    newsize = (204, 204)
     img = img.resize(newsize)
     img_array = np.array(img)
     normalized_image_array = (img_array.astype(np.float32) / 127.0) - 1
